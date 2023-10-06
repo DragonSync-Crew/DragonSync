@@ -1,0 +1,178 @@
+CREATE TABLE spells(
+spell_id INTEGER primary key AUTOINCREMENT,
+name TEXT not null,
+description text not null,
+school TEXT not null,
+duration varchar (30) not null,
+concentration bit not null,
+spellRange TEXT not null,
+vocalComponent bit not null,
+somaticComponent bit not null,
+materialComponents bit not null,
+materialDescription text,
+level tinyint  not null,
+classes text not null
+);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE charSpells(
+spell_id int  not null,
+charSheet_id int  not null,
+foreign key (spell_id) references spells(spell_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE class(
+class_id INTEGER primary key AUTOINCREMENT,
+images mediumblob,
+name TEXT not null,
+lore mediumtext not null,
+features mediumtext  not null,
+addProficiencies tinytext not null
+);
+CREATE TABLE subclass(
+subclass_id INTEGER primary key AUTOINCREMENT,
+images mediumblob,
+name TEXT not null,
+lore mediumtext not null,
+features mediumtext  not null,
+addProficiencies tinytext not null,
+class_id int  not null,
+foreign key (class_id) references class(class_id)
+);
+CREATE TABLE charClass(
+class_id int  not null,
+charSheet_id int  not null,
+level int  not null,
+Cantrip tinyint  not null,
+spellSlot1 tinyint  not null,
+spellSlot2 tinyint  not null,
+spellSlot3 tinyint  not null,
+spellSlot4 tinyint  not null,
+spellSlot5 tinyint  not null,
+spellSlot6 tinyint  not null,
+spellSlot7 tinyint  not null,
+spellSlot8 tinyint  not null,
+spellSlot9 tinyint  not null,
+foreign key (class_id) references class(class_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE charSubclass(
+class_id int  not null,
+subclass_id int  not null,
+charSheet_id int  not null,
+level int  not null,
+Cantrip tinyint  not null,
+spellSlot1 tinyint  not null,
+spellSlot2 tinyint  not null,
+spellSlot3 tinyint  not null,
+spellSlot4 tinyint  not null,
+spellSlot5 tinyint  not null,
+spellSlot6 tinyint  not null,
+spellSlot7 tinyint  not null,
+spellSlot8 tinyint  not null,
+spellSlot9 tinyint  not null,
+foreign key (class_id) references subclass(class_id),
+foreign key (subclass_id) references subclass(subclass_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE race(
+race_id INTEGER primary key AUTOINCREMENT,
+images blob,
+name TEXT not null,
+lore mediumtext  not null,
+traits mediumtext not null,
+speed tinytext not null,
+AttributeIncrease tinytext not null
+);
+CREATE TABLE charRace(
+race_id int  not null,
+charSheet_id int  not null,
+foreign key (race_id) references race(race_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE subrace(
+subrace_id INTEGER primary key AUTOINCREMENT,
+images blob,
+name TEXT not null,
+lore mediumtext  not null,
+traits mediumtext not null,
+speed tinytext not null,
+AttributeIncrease tinytext not null,
+race_id int  not null,
+foreign key (race_id) references race(race_id)
+);
+CREATE TABLE charSubrace(
+race_id int  not null,
+subrace_id int  not null,
+charSheet_id int  not null,
+foreign key (race_id) references subrace(race_id),
+foreign key (subrace_id) references subrace(subrace_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE item(
+item_id INTEGER primary key AUTOINCREMENT,
+images blob,
+name TEXT not null,
+description text not null,
+rarity TEXT not null,
+type_1 TEXT not null,
+type_2 TEXT,
+type_3 TEXT,
+gear_type TEXT,
+value int
+);
+CREATE TABLE charItems(
+item_id int  not null,
+charSheet_id int  not null,
+foreign key (item_id) references item(item_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE feats(
+feat_id INTEGER primary key AUTOINCREMENT,
+name TEXT not null,
+description mediumtext not null,
+pre_requisitesBool bit not null,
+pre_requisites tinytext
+);
+CREATE TABLE charFeats(
+feat_id int  not null,
+charSheet_id int  not null,
+foreign key (feat_id) references feats(feat_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE background(
+background_id INTEGER primary key AUTOINCREMENT,
+name TEXT not null,
+feature text not null,
+lore mediumtext not null
+);
+CREATE TABLE charBackground(
+background_id int  not null,
+charSheet_id int  not null,
+foreign key (background_id) references background(background_id),
+foreign key (charSheet_id) references character_sheet(char_id)
+);
+CREATE TABLE character_sheet(
+char_id INTEGER primary key AUTOINCREMENT,
+images mediumblob,
+name TEXT not null,
+str int not null,
+dex int not null,
+wis int not null,
+charisma int not null,
+Intelligence int not null,
+con int not null,
+skillProficiencies TEXT not null,
+skillExpertises TEXT,
+tollProficiencies TEXT,
+tollExpertises TEXT,
+weaponProficiencies TEXT not null,
+armorProficiencies TEXT not null,
+max_hp int  not null,
+hit_dice TEXT not null,
+current_hit_dice TEXT not null,
+temp_hp int  not null,
+AC tinyint  not null,
+backstory mediumtext,
+alignment char(2),
+personality_traits mediumtext
+);
